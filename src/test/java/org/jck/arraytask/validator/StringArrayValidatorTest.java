@@ -1,5 +1,6 @@
 package org.jck.arraytask.validator;
 
+import org.jck.arraytask.validator.impl.StringArrayValidatorImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,49 +13,42 @@ public class StringArrayValidatorTest {
 
   @BeforeEach
   public void setUp() {
-    validator = new StringArrayValidator();
+    validator = new StringArrayValidatorImpl();
   }
 
   @ParameterizedTest
-  @ValueSource(
-      strings = {
-        "1 2 3 4 5", // Standard spaces
-        "10;20;30;40", // Semicolons
-        "1, 2, 3", // Commas with spaces
-        "-5, 10, +15", // Numbers with signs
-        "42" // Single number array
-      })
+  @ValueSource(strings = {"1 2 3 4 5", "10;20;30;40", "1, 2, 3", "-5, 10, +15", "42"})
   public void testIsValidShouldReturnTrueForValidLines(String validLine) {
+    // given
 
+    // when
     boolean actualResult = validator.isValid(validLine);
 
-    Assertions.assertTrue(actualResult, "Validator should return true for: " + validLine);
+    // then
+    Assertions.assertTrue(actualResult);
   }
 
   @ParameterizedTest
-  @ValueSource(
-      strings = {
-        "1, 2, x3, 5", // Contains a letter
-        "6..5 7 8", // Double dots
-        "11- 2 42-", // Trailing minus signs
-        "", // Empty string
-        "   ", // Blank string
-        "1, 2, – 42" // Contains long dash symbol
-      })
+  @ValueSource(strings = {"1, 2, x3, 5", "6..5 7 8", "11- 2 42-", "", "   ", "1, 2, – 42"})
   public void testIsValidShouldReturnFalseForInvalidLines(String invalidLine) {
+    // given
 
+    // when
     boolean actualResult = validator.isValid(invalidLine);
 
-    Assertions.assertFalse(actualResult, "Validator should return false for: " + invalidLine);
+    // then
+    Assertions.assertFalse(actualResult);
   }
 
   @Test
   public void testIsValidShouldReturnFalseForNullLine() {
-
+    // given
     String nullLine = null;
 
+    // when
     boolean actualResult = validator.isValid(nullLine);
 
-    Assertions.assertFalse(actualResult, "Validator should return false for null input");
+    // then
+    Assertions.assertFalse(actualResult);
   }
 }

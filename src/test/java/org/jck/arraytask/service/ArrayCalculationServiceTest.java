@@ -5,7 +5,6 @@ import org.jck.arraytask.service.impl.ArrayCalculationServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 
@@ -20,56 +19,60 @@ public class ArrayCalculationServiceTest {
 
   @Test
   public void testFindMinSuccess() {
-
+    // given
     int[] rawNumbers = {10, -5, 20, 0, 35};
-
     CustomArray customArray = new CustomArray(rawNumbers);
     int expectedMin = -5;
 
+    // when
     OptionalInt actualMinOptional = calculationService.findMin(customArray);
 
-    Assertions.assertTrue(actualMinOptional.isPresent(), "Optional should contain a value");
-    int actualMin = actualMinOptional.getAsInt();
-    Assertions.assertEquals(expectedMin, actualMin, "Minimum value calculation failed");
+    // then
+    Assertions.assertTrue(actualMinOptional.isPresent());
+    Assertions.assertEquals(expectedMin, actualMinOptional.getAsInt());
   }
 
   @Test
   public void testFindMaxSuccess() {
-
+    // given
     int[] rawNumbers = {10, -5, 20, 0, 35};
     CustomArray customArray = new CustomArray(rawNumbers);
     int expectedMax = 35;
 
+    // when
     OptionalInt actualMaxOptional = calculationService.findMax(customArray);
 
-    Assertions.assertTrue(actualMaxOptional.isPresent(), "Optional should contain a value");
-    int actualMax = actualMaxOptional.getAsInt();
-    Assertions.assertEquals(expectedMax, actualMax, "Maximum value calculation failed");
+    // then
+    Assertions.assertTrue(actualMaxOptional.isPresent());
+    Assertions.assertEquals(expectedMax, actualMaxOptional.getAsInt());
   }
 
   @Test
   public void testCalculateSumSuccess() {
-
+    // given
     int[] rawNumbers = {1, 2, 3, 4, 5};
     CustomArray customArray = new CustomArray(rawNumbers);
-    int expectedSum = 15; // 1+2+3+4+5 = 15
+    int expectedSum = 15;
 
+    // when
     int actualSum = calculationService.calculateSum(customArray);
 
-    Assertions.assertEquals(expectedSum, actualSum, "Sum calculation failed");
+    // then
+    Assertions.assertEquals(expectedSum, actualSum);
   }
 
   @Test
   public void testCalculateAverageSuccess() {
-
+    // given
     int[] rawNumbers = {1, 2, 3, 4};
     CustomArray customArray = new CustomArray(rawNumbers);
-    double expectedAverage = 2.5; // 10 / 4 = 2.5
+    double expectedAverage = 2.5;
 
+    // when
     OptionalDouble actualAverageOptional = calculationService.calculateAverage(customArray);
 
-    Assertions.assertTrue(actualAverageOptional.isPresent(), "Optional should contain a value");
-    double actualAverage = actualAverageOptional.getAsDouble();
-    Assertions.assertEquals(expectedAverage, actualAverage, 0.0001, "Average calculation failed");
+    // then
+    Assertions.assertTrue(actualAverageOptional.isPresent());
+    Assertions.assertEquals(expectedAverage, actualAverageOptional.getAsDouble(), 0.0001);
   }
 }

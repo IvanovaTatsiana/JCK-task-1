@@ -12,45 +12,45 @@ public class ArrayFactoryTest {
 
   @BeforeEach
   public void setUp() {
-
     factory = new ArrayFactory();
   }
 
   @Test
   public void testCreateArraySuccess() throws ArrayTaskException {
-
+    // given
     int[] rawNumbers = {1, 2, 3, 4, 5};
 
+    // when
     CustomArray actualArray = factory.createArray(rawNumbers);
 
-    Assertions.assertNotNull(actualArray, "Factory should not return a null object");
-    Assertions.assertArrayEquals(
-        rawNumbers, actualArray.getElements(), "Factory elements mismatch");
+    // then
+    Assertions.assertNotNull(actualArray);
+    Assertions.assertArrayEquals(rawNumbers, actualArray.getElements());
   }
 
   @Test
   public void testCreateArrayShouldThrowExceptionForNullInput() {
-
+    // given
     int[] nullNumbers = null;
 
+    // when & then
     Assertions.assertThrows(
         ArrayTaskException.class,
         () -> {
           factory.createArray(nullNumbers);
-        },
-        "Factory should throw ArrayTaskException when the input array is null");
+        });
   }
 
   @Test
   public void testCreateArrayShouldThrowExceptionForEmptyInput() {
-
+    // given
     int[] emptyNumbers = new int[0];
 
+    // when & then
     Assertions.assertThrows(
         ArrayTaskException.class,
         () -> {
           factory.createArray(emptyNumbers);
-        },
-        "Factory should throw ArrayTaskException when the input array is empty");
+        });
   }
 }
