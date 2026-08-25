@@ -1,6 +1,5 @@
 package com.innowise.jck.arraytask.entity;
 
-import com.innowise.jck.arraytask.exception.ArrayTaskException;
 import com.innowise.jck.arraytask.observer.ArrayObserver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -57,12 +56,9 @@ public class CustomArray {
 
   private void notifyObserver() {
     if (observer != null) {
-      try {
-        logger.debug("Notifying observer tracking context for ID: {}", id);
-        observer.update(id, elements);
-      } catch (ArrayTaskException e) {
-        logger.error("Failed to notify observer mapping data state for ID: " + id, e);
-      }
+      logger.debug("Notifying observer tracking context for ID: {}", id);
+      // Прямой вызов без try-catch оверхеда!
+      observer.update(id, elements);
     } else {
       logger.warn("No active observer attached for ID: {}", id);
     }

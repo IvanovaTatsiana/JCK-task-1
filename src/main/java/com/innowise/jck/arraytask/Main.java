@@ -46,6 +46,7 @@ public class Main {
           int[] numbers = parser.parseToArray(line);
           CustomArray array = factory.createArray(numbers);
 
+          // Теперь выполняется чисто, без потенциальных рисков проброса checked-ошибок
           observer.add(array);
           repository.add(array);
 

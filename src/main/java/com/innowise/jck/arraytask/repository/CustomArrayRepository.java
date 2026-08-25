@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CustomArrayRepository {
   private static final Logger logger = LogManager.getLogger(CustomArrayRepository.class);
@@ -24,37 +25,31 @@ public class CustomArrayRepository {
   }
 
   public void add(CustomArray array) {
-    logger.info(
-        "Injecting instance layer model reference block configuration layout into database memory list map for ID: {}",
-        array.getId());
+    if (array == null) {
+      logger.warn("Cannot add null array to repository");
+      return;
+    }
+    logger.info("Registering array entity inside repository mapping for ID: {}", array.getId());
     arrays.add(array);
   }
 
   public void remove(CustomArray array) {
-    logger.info(
-        "Evicting instance layer model reference block configuration layout out of database memory list map for ID: {}",
-        array.getId());
+    if (array == null) {
+      logger.warn("Cannot remove null array from repository");
+      return;
+    }
+    logger.info("Removing array entity from repository mapping for ID: {}", array.getId());
     arrays.remove(array);
   }
 
   public List<CustomArray> query(Specification specification) {
-    logger.info(
-        "Evaluating filtering loops execution algorithms for structural collections repository tier matching setup rules");
-    List<CustomArray> result = new ArrayList<>();
-    for (CustomArray array : arrays) {
-      if (specification.specify(array)) {
-        result.add(array);
-      }
-    }
-    return result;
+    logger.info("Executing filtering streams for repository matching rules");
+    return arrays.stream().filter(specification::specify).collect(Collectors.toList());
   }
 
   public List<CustomArray> sort(Comparator<CustomArray> comparator) {
-    logger.info(
-        "Applying row sequencing mapping evaluation algorithms against storage layer entities");
-    List<CustomArray> copy = new ArrayList<>(arrays);
-    copy.sort(comparator);
-    return copy;
+    logger.info("Applying sorting algorithms against storage layer entities");
+    return arrays.stream().sorted(comparator).collect(Collectors.toList());
   }
 
   public List<CustomArray> getAll() {

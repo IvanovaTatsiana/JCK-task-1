@@ -1,7 +1,6 @@
 package com.innowise.jck.arraytask.observer.impl;
 
 import com.innowise.jck.arraytask.entity.CustomArray;
-import com.innowise.jck.arraytask.exception.ArrayTaskException;
 import com.innowise.jck.arraytask.observer.ArrayObserver;
 import com.innowise.jck.arraytask.warehouse.Warehouse;
 import org.apache.logging.log4j.LogManager;
@@ -11,35 +10,51 @@ public class ArrayObserverImpl implements ArrayObserver {
   private static final Logger logger = LogManager.getLogger(ArrayObserverImpl.class);
 
   @Override
-  public void update(String id, int[] array) throws ArrayTaskException {
+  public void update(String id, int[] array) {
     if (id == null || array == null) {
-      logger.error("Observer layer caught invalid notification schema elements");
-      throw new ArrayTaskException(
-          "Intercept update action validation failure: target fields null");
+      logger.error(
+          "Observer state update rejected: identification key or elements matrix is missing (null)");
+      return;
     }
-    logger.info("Observer tracking validation trigger activated for target object ID: {}", id);
-    Warehouse.getInstance().changeArrayStats(id, array);
+    logger.info("Observer verified dynamic update action tracking context for ID: {}", id);
+    try {
+      Warehouse.getInstance().changeArrayStats(id, array);
+    } catch (Exception e) {
+      logger.error(
+          "Internal processing operation failure inside warehouse data update tier for ID: " + id,
+          e);
+    }
   }
 
   @Override
-  public void add(CustomArray array) throws ArrayTaskException {
+  public void add(CustomArray array) {
     if (array == null) {
-      logger.error("Observer mapping register dropped: reference entity instance is missing");
-      throw new ArrayTaskException(
-          "Failed to attach validation monitor: target mapping instance missing");
+      logger.error(
+          "Observer layer tracking assignment rejected: provided reference target is missing (null)");
+      return;
     }
     logger.info(
-        "Binding model target notification layout parameters for tracked ID: {}", array.getId());
+        "Registering monitoring lifecycle triggers context targeting ID: {}", array.getId());
     array.setObserver(this);
-    Warehouse.getInstance().changeArrayStats(array.getId(), array.getElements());
+    try {
+      Warehouse.getInstance().changeArrayStats(array.getId(), array.getElements());
+    } catch (Exception e) {
+      logger.error(
+          "Failed to execute initial metrics calculation layout mapping for newly registered ID: "
+              + array.getId(),
+          e);
+    }
   }
 
   @Override
   public void remove(String id) {
-    if (id != null) {
-      logger.info(
-          "Detaching monitoring pipeline structure context for targeted instance ID: {}", id);
-      Warehouse.getInstance().remove(id);
+    if (id == null) {
+      logger.warn(
+          "Observer deregistration processing dropped: missing target identity string key reference");
+      return;
     }
+    logger.info(
+        "Evicting properties references inside system cache tracking memory tier for ID: {}", id);
+    Warehouse.getInstance().remove(id);
   }
 }
