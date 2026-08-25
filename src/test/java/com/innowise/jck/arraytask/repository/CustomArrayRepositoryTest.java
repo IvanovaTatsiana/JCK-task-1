@@ -1,6 +1,6 @@
 package com.innowise.jck.arraytask.repository;
 
-import com.innowise.jck.arraytask.comparator.CustomArrayComparatorClassic;
+import com.innowise.jck.arraytask.comparator.CustomArrayComparator;
 import com.innowise.jck.arraytask.entity.CustomArray;
 import com.innowise.jck.arraytask.exception.ArrayTaskException;
 import com.innowise.jck.arraytask.observer.ArrayObserver;
@@ -74,7 +74,7 @@ class CustomArrayRepositoryTest {
 
   @Test
   void testSortById() {
-    List<CustomArray> sorted = repository.sort(CustomArrayComparatorClassic.ID);
+    List<CustomArray> sorted = repository.sort(CustomArrayComparator.ID);
     assertEquals("A", sorted.get(0).getId());
     assertEquals("B", sorted.get(1).getId());
     assertEquals("C", sorted.get(2).getId());
@@ -82,7 +82,7 @@ class CustomArrayRepositoryTest {
 
   @Test
   void testSortBySize() {
-    List<CustomArray> sorted = repository.sort(CustomArrayComparatorClassic.SIZE);
+    List<CustomArray> sorted = repository.sort(CustomArrayComparator.SIZE);
     assertEquals(2, sorted.get(0).getArraySize()); // C (size=2)
     assertEquals(3, sorted.get(1).getArraySize()); // A (size=3)
     assertEquals(4, sorted.get(2).getArraySize()); // B (size=4)
@@ -90,7 +90,7 @@ class CustomArrayRepositoryTest {
 
   @Test
   void testSortByFirstElement() {
-    List<CustomArray> sorted = repository.sort(CustomArrayComparatorClassic.FIRST_ELEMENT);
+    List<CustomArray> sorted = repository.sort(CustomArrayComparator.FIRST_ELEMENT);
     assertEquals(-5, sorted.get(0).getFirstElement()); // B
     assertEquals(1, sorted.get(1).getFirstElement()); // A
     assertEquals(10, sorted.get(2).getFirstElement()); // C

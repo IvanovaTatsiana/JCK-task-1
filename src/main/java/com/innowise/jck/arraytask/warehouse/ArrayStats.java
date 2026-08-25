@@ -31,6 +31,6 @@ public class ArrayStats {
 
   @Override
   public String toString() {
-    return "ArrayStats{min=" + min + ", max=" + max + ", sum=" + sum + ", avg=" + average + "}";
+    return String.format("ArrayStats{min=%d, max=%d, sum=%d, avg=%.2f}", min, max, sum, average);
   }
 }

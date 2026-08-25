@@ -1,6 +1,6 @@
 package com.innowise.jck.arraytask;
 
-import com.innowise.jck.arraytask.comparator.CustomArrayComparatorClassic;
+import com.innowise.jck.arraytask.comparator.CustomArrayComparator;
 import com.innowise.jck.arraytask.entity.CustomArray;
 import com.innowise.jck.arraytask.factory.ArrayFactory;
 import com.innowise.jck.arraytask.factory.impl.ArrayFactoryImpl;
@@ -27,7 +27,7 @@ public class Main {
   private static final Logger logger = LogManager.getLogger(Main.class);
 
   public static void main(String[] args) {
-    logger.info("Application starting system context orchestration...");
+    logger.info("Starting context system initialization pipeline steps...");
     try {
       CustomFileReader reader = new CustomFileReaderImpl();
       StringArrayValidator validator = new StringArrayValidatorImpl();
@@ -38,96 +38,79 @@ public class Main {
       Warehouse warehouse = Warehouse.getInstance();
       ArrayObserver observer = new ArrayObserverImpl();
 
-      System.out.println("--- Reading and processing file ---");
+      System.out.println("--- Load & Parse Data ---");
       List<String> lines = reader.readLines("input.txt");
 
       for (String line : lines) {
         if (validator.isValid(line)) {
-          int[] parsedNumbers = parser.parseToArray(line);
-          CustomArray customArray = factory.createArray(parsedNumbers);
+          int[] numbers = parser.parseToArray(line);
+          CustomArray array = factory.createArray(numbers);
 
-          observer.add(customArray);
-          repository.add(customArray);
+          observer.add(array);
+          repository.add(array);
 
-          System.out.println("Added to repository: " + customArray);
+          System.out.println("Registered: " + array);
         } else {
-          System.out.println("Line skipped (invalid format): [" + line + "]");
+          System.out.println("Skipped invalid format: [" + line + "]");
         }
       }
 
-      System.out.println("\n--- Warehouse State ---");
+      System.out.println("\n--- Initial Warehouse State ---");
       for (CustomArray array : repository.getAll()) {
-        System.out.println(
-            "ID '" + array.getId() + "' -> Metrics: " + warehouse.get(array.getId()));
+        System.out.println("ID '" + array.getId() + "' metrics -> " + warehouse.get(array.getId()));
       }
 
-      System.out.println("\n--- Testing Observer Automatic Recalculation ---");
+      System.out.println("\n--- Test Observer Updates ---");
       if (!repository.getAll().isEmpty()) {
-        CustomArray targetArray = repository.getAll().get(0);
-        System.out.println("Stats BEFORE modification: " + warehouse.get(targetArray.getId()));
-
-        targetArray.setElement(0, 9999);
-        System.out.println(
-            "Stats AFTER automatic recalculation: " + warehouse.get(targetArray.getId()));
+        CustomArray target = repository.getAll().get(0);
+        System.out.println("Before modification: " + warehouse.get(target.getId()));
+        target.setElement(0, 5000);
+        System.out.println("After modification:  " + warehouse.get(target.getId()));
       }
 
-      System.out.println("\n--- Testing Observer Removal Logic ---");
+      System.out.println("\n--- Test Observer Removal ---");
       if (!repository.getAll().isEmpty()) {
-        CustomArray arrayToRemove = repository.getAll().get(repository.getAll().size() - 1);
-        String idToRemove = arrayToRemove.getId();
-        System.out.println(
-            "Stats in warehouse for ID '"
-                + idToRemove
-                + "' BEFORE removal: "
-                + warehouse.get(idToRemove));
-
-        repository.remove(arrayToRemove);
-        observer.remove(idToRemove);
-
-        System.out.println(
-            "Stats in warehouse for ID '"
-                + idToRemove
-                + "' AFTER removal: "
-                + warehouse.get(idToRemove));
+        CustomArray target = repository.getAll().get(repository.getAll().size() - 1);
+        String id = target.getId();
+        System.out.println("Warehouse status before removal: " + warehouse.get(id));
+        repository.remove(target);
+        observer.remove(id);
+        System.out.println("Warehouse status after removal:  " + warehouse.get(id));
       }
 
-      System.out.println("\n--- Specification Query Search (from impl package) ---");
+      System.out.println("\n--- Filter Queries ---");
       if (!repository.getAll().isEmpty()) {
-        String firstId = repository.getAll().get(0).getId();
-        System.out.println("Searching for array with specific ID '" + firstId + "':");
-        repository.query(new SpecificationById(firstId)).forEach(System.out::println);
+        String id = repository.getAll().get(0).getId();
+        System.out.println("Find by ID '" + id + "':");
+        repository.query(new SpecificationById(id)).forEach(System.out::println);
       }
 
-      System.out.println("\nArrays with Avg > 10.0:");
+      System.out.println("\nFind by Avg > 10.0:");
       repository.query(new SpecificationByAverage(10.0)).forEach(System.out::println);
 
-      System.out.println("\nArrays with Min >= 0:");
+      System.out.println("\nFind by Min >= 0:");
       repository.query(new SpecificationByMin(0)).forEach(System.out::println);
 
-      System.out.println("\nArrays with Max <= 100:");
+      System.out.println("\nFind by Max <= 100:");
       repository.query(new SpecificationByMax(100)).forEach(System.out::println);
 
-      System.out.println("\nArrays with Sum > 50:");
+      System.out.println("\nFind by Sum > 50:");
       repository.query(new SpecificationBySum(50)).forEach(System.out::println);
 
-      System.out.println("\n--- Enum Sorting Demonstration ---");
-      System.out.println("Sorting by array ID:");
-      List<CustomArray> sortedById = repository.sort(CustomArrayComparatorClassic.ID);
-      sortedById.forEach(System.out::println);
+      System.out.println("\n--- Repository Sorting ---");
+      System.out.println("By ID:");
+      repository.sort(CustomArrayComparator.ID).forEach(System.out::println);
 
-      System.out.println("\nSorting by array SIZE:");
-      List<CustomArray> sortedBySize = repository.sort(CustomArrayComparatorClassic.SIZE);
-      sortedBySize.forEach(System.out::println);
+      System.out.println("\nBy Size:");
+      repository.sort(CustomArrayComparator.SIZE).forEach(System.out::println);
 
-      System.out.println("\nSorting by FIRST_ELEMENT:");
-      List<CustomArray> sortedByFirst = repository.sort(CustomArrayComparatorClassic.FIRST_ELEMENT);
-      sortedByFirst.forEach(System.out::println);
+      System.out.println("\nBy First Element:");
+      repository.sort(CustomArrayComparator.FIRST_ELEMENT).forEach(System.out::println);
 
     } catch (Exception e) {
-      logger.fatal("Fatal runtime core failure handled!", e);
-      System.err.println("Critical error occurred: " + e.getMessage());
-      e.printStackTrace();
+      logger.error(
+          "Global processing operation layer caught execution exception failure mapping logs", e);
+      System.err.println("Fatal execution error: " + e.getMessage());
     }
-    logger.info("Application execution runtime successfully stopped.");
   }
 }

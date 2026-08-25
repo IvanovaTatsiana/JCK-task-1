@@ -11,11 +11,11 @@ public class StringArrayValidatorImpl implements StringArrayValidator {
   @Override
   public boolean isValid(String line) {
     if (line == null || line.isBlank()) {
-      logger.debug("Line validation failed: source string is null or empty");
+      logger.debug("Validation structural criteria check dropped: string reference is empty");
       return false;
     }
     boolean matches = line.trim().matches(ARRAY_REGEX);
-    logger.debug("Line [{}] validation result: {}", line.trim(), matches);
+    logger.debug("Regular expression matching output for raw row data block: {}", matches);
     return matches;
   }
 }

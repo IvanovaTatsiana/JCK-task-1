@@ -3,7 +3,7 @@ package com.innowise.jck.arraytask.comparator;
 import com.innowise.jck.arraytask.entity.CustomArray;
 import java.util.Comparator;
 
-public enum CustomArrayComparatorClassic implements Comparator<CustomArray> {
+public enum CustomArrayComparator implements Comparator<CustomArray> {
   ID {
     @Override
     public int compare(CustomArray a1, CustomArray a2) {

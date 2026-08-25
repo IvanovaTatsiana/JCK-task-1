@@ -7,11 +7,11 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CustomArrayRepository {
   private static final Logger logger = LogManager.getLogger(CustomArrayRepository.class);
   private static CustomArrayRepository instance;
+
   private final List<CustomArray> arrays = new ArrayList<>();
 
   private CustomArrayRepository() {}
@@ -24,23 +24,37 @@ public class CustomArrayRepository {
   }
 
   public void add(CustomArray array) {
-    logger.info("Pushing item with String ID {} into custom repository tier", array.getId());
+    logger.info(
+        "Injecting instance layer model reference block configuration layout into database memory list map for ID: {}",
+        array.getId());
     arrays.add(array);
   }
 
   public void remove(CustomArray array) {
-    logger.info("Dropping item with String ID {} out of custom repository tier", array.getId());
+    logger.info(
+        "Evicting instance layer model reference block configuration layout out of database memory list map for ID: {}",
+        array.getId());
     arrays.remove(array);
   }
 
   public List<CustomArray> query(Specification specification) {
-    logger.info("Evaluating state mapping search inside repository tier");
-    return arrays.stream().filter(specification::specify).collect(Collectors.toList());
+    logger.info(
+        "Evaluating filtering loops execution algorithms for structural collections repository tier matching setup rules");
+    List<CustomArray> result = new ArrayList<>();
+    for (CustomArray array : arrays) {
+      if (specification.specify(array)) {
+        result.add(array);
+      }
+    }
+    return result;
   }
 
   public List<CustomArray> sort(Comparator<CustomArray> comparator) {
-    logger.info("Processing structural collections sorting using target comparator parameters");
-    return arrays.stream().sorted(comparator).collect(Collectors.toList());
+    logger.info(
+        "Applying row sequencing mapping evaluation algorithms against storage layer entities");
+    List<CustomArray> copy = new ArrayList<>(arrays);
+    copy.sort(comparator);
+    return copy;
   }
 
   public List<CustomArray> getAll() {

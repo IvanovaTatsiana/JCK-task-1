@@ -17,16 +17,16 @@ public class CustomFileReaderImpl implements CustomFileReader {
   @Override
   public List<String> readLines(String fileName) throws ArrayTaskException {
     if (fileName == null) {
-      logger.error("Reader configuration issue: filename is null");
-      throw new ArrayTaskException("File name cannot be null");
+      logger.error("I/O reader configuration tracking issue: targeting null parameter");
+      throw new ArrayTaskException("Target filename path cannot be null");
     }
-    logger.info("Locating resources targeting: {}", fileName);
+    logger.info("Locating resources system stream path for processing: {}", fileName);
     ClassLoader classLoader = getClass().getClassLoader();
+
     try (InputStream inputStream = classLoader.getResourceAsStream(fileName)) {
       if (inputStream == null) {
-
-        logger.debug("Target path not found for expected test fail: {}", fileName);
-        throw new ArrayTaskException("Resource file not found: " + fileName);
+        logger.error("Resources streaming endpoint unresolved: {}", fileName);
+        throw new ArrayTaskException("Missing resource data source target: " + fileName);
       }
       try (BufferedReader reader =
           new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
@@ -35,14 +35,14 @@ public class CustomFileReaderImpl implements CustomFileReader {
         while ((line = reader.readLine()) != null) {
           lines.add(line);
         }
-        logger.info("Total entries successfully read: {}", lines.size());
+        logger.info("Buffer pipeline closed. Rows extracted successfully: {}", lines.size());
         return lines;
       }
-    } catch (ArrayTaskException e) {
-      throw e;
     } catch (Exception e) {
-      logger.error("Fatal I/O failure while processing file stream: {}", fileName, e);
-      throw new ArrayTaskException("Error reading file: " + fileName, e);
+      logger.error(
+          "Runtime exception state processing internal file stream for target path: " + fileName,
+          e);
+      throw new ArrayTaskException("File system resource operation error", e);
     }
   }
 }

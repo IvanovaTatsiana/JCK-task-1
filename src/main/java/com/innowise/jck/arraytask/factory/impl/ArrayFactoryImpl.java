@@ -13,11 +13,11 @@ public class ArrayFactoryImpl implements ArrayFactory {
   @Override
   public CustomArray createArray(int[] elements) throws ArrayTaskException {
     if (elements == null || elements.length == 0) {
-      logger.error("Failed to create CustomArray: source array is empty or null");
-      throw new ArrayTaskException("Cannot create CustomArray: source array is empty or null");
+      logger.error("Factory cannot process raw creation: array payload is empty or null");
+      throw new ArrayTaskException("Invalid data array block for factory processing");
     }
-    String generatedId = IdGenerator.generateId();
-    logger.info("CustomArray successfully created with String ID: {}", generatedId);
-    return new CustomArray(generatedId, elements);
+    String id = IdGenerator.generateId();
+    logger.info("Factory verified elements layout. Assembling object with ID: {}", id);
+    return new CustomArray(id, elements);
   }
 }

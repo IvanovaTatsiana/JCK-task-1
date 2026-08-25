@@ -10,12 +10,11 @@ import java.util.Map;
 public class Warehouse {
   private static final Logger logger = LogManager.getLogger(Warehouse.class);
   private static Warehouse instance;
-  private final Map<String, ArrayStats> arrayStatsMap;
+
+  private final Map<String, ArrayStats> arrayStatsMap = new HashMap<>();
   private final ArrayCalculationService calculationService = new ArrayCalculationServiceImpl();
 
-  private Warehouse() {
-    this.arrayStatsMap = new HashMap<>();
-  }
+  private Warehouse() {}
 
   public static Warehouse getInstance() {
     if (instance == null) {
@@ -26,37 +25,36 @@ public class Warehouse {
 
   public void changeArrayStats(String id, int[] elements) {
     if (id == null || elements == null) {
-      logger.warn("Processing failed in warehouse: invalid null parameters passed");
+      logger.warn("Warehouse process layout state skip: raw tracking arguments are invalid");
       return;
     }
-    logger.info("Recalculating and modifying stats inside warehouse for ID: {}", id);
+    logger.info("Warehouse state mapping modification processing metrics layout for ID: {}", id);
 
     int min = calculationService.findMin(elements);
     int max = calculationService.findMax(elements);
     int sum = calculationService.calculateSum(elements);
     double avg = calculationService.calculateAverage(elements);
 
-    ArrayStats stats = new ArrayStats(min, max, sum, avg);
-    arrayStatsMap.put(id, stats);
+    arrayStatsMap.put(id, new ArrayStats(min, max, sum, avg));
   }
 
   public ArrayStats get(String id) {
-    logger.info("Get stats from warehouse for ID: {}", id);
+    logger.debug("Fetch mapping properties request from cache storage for ID: {}", id);
     return arrayStatsMap.get(id);
   }
 
   public void put(String id, ArrayStats stats) {
-    logger.info("Put stats into warehouse for ID: {}", id);
+    logger.debug("Direct cache injection layout into cache storage mapping for ID: {}", id);
     arrayStatsMap.put(id, stats);
   }
 
   public void remove(String id) {
-    logger.info("Remove stats from warehouse for ID: {}", id);
+    logger.info("Evicting mapping configuration references from storage for ID: {}", id);
     arrayStatsMap.remove(id);
   }
 
   public void clear() {
-    logger.info("Clearing complete cache memory inside warehouse");
+    logger.info("Clearing memory tables allocation maps inside warehouse structure");
     arrayStatsMap.clear();
   }
 }

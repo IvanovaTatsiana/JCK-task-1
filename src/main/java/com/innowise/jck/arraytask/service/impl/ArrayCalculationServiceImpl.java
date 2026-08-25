@@ -10,28 +10,28 @@ public class ArrayCalculationServiceImpl implements ArrayCalculationService {
 
   @Override
   public int findMin(int[] array) {
-    logger.debug("Calculating min primitive element");
+    logger.debug("Calculation task processing min calculation");
     if (array == null || array.length == 0) return 0;
     return Arrays.stream(array).min().orElse(0);
   }
 
   @Override
   public int findMax(int[] array) {
-    logger.debug("Calculating max primitive element");
+    logger.debug("Calculation task processing max calculation");
     if (array == null || array.length == 0) return 0;
     return Arrays.stream(array).max().orElse(0);
   }
 
   @Override
   public int calculateSum(int[] array) {
-    logger.debug("Summing total matrix state");
+    logger.debug("Calculation task processing sum calculation");
     if (array == null) return 0;
     return Arrays.stream(array).sum();
   }
 
   @Override
   public double calculateAverage(int[] array) {
-    logger.debug("Calculating mean state");
+    logger.debug("Calculation task processing average calculation");
     if (array == null || array.length == 0) return 0.0;
     return Arrays.stream(array).average().orElse(0.0);
   }

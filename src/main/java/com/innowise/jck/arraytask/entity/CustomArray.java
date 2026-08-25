@@ -1,9 +1,14 @@
 package com.innowise.jck.arraytask.entity;
 
+import com.innowise.jck.arraytask.exception.ArrayTaskException;
 import com.innowise.jck.arraytask.observer.ArrayObserver;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.util.Arrays;
 
 public class CustomArray {
+  private static final Logger logger = LogManager.getLogger(CustomArray.class);
+
   private final String id;
   private int[] elements;
   private ArrayObserver observer;
@@ -11,6 +16,7 @@ public class CustomArray {
   public CustomArray(String id, int[] elements) {
     this.id = id;
     this.elements = elements != null ? elements.clone() : new int[0];
+    logger.info("CustomArray instance initialized. ID: {}, Size: {}", id, this.elements.length);
   }
 
   public String getId() {
@@ -30,14 +36,17 @@ public class CustomArray {
   }
 
   public void setElements(int[] elements) {
+    logger.info("Setting new elements array block for ID: {}", id);
     this.elements = elements != null ? elements.clone() : new int[0];
     notifyObserver();
   }
 
-  public void setElement(int index, int value) throws IndexOutOfBoundsException {
+  public void setElement(int index, int value) {
     if (index < 0 || index >= elements.length) {
-      throw new IndexOutOfBoundsException("Invalid index: " + index);
+      logger.error("Index exception for ID: {}. Index {} is out of bounds", id, index);
+      throw new IndexOutOfBoundsException("Index out of bounds: " + index);
     }
+    logger.info("Updating element at index {} to value {} for ID: {}", index, value, id);
     this.elements[index] = value;
     notifyObserver();
   }
@@ -49,11 +58,13 @@ public class CustomArray {
   private void notifyObserver() {
     if (observer != null) {
       try {
+        logger.debug("Notifying observer tracking context for ID: {}", id);
         observer.update(id, elements);
-      } catch (Exception e) {
-        org.apache.logging.log4j.LogManager.getLogger(CustomArray.class)
-            .error("Error notifying observer for array ID: {}", id, e);
+      } catch (ArrayTaskException e) {
+        logger.error("Failed to notify observer mapping data state for ID: " + id, e);
       }
+    } else {
+      logger.warn("No active observer attached for ID: {}", id);
     }
   }
 
