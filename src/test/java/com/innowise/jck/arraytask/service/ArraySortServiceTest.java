@@ -3,6 +3,9 @@ package com.innowise.jck.arraytask.service;
 import com.innowise.jck.arraytask.service.impl.ArraySortServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
+
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,6 +18,7 @@ class ArraySortServiceTest {
   }
 
   @Test
+  @Timeout(value = 100, unit = TimeUnit.MILLISECONDS)
   void testBubbleSort() {
     int[] array = {4, 2, 5, 1, 3};
     sortService.bubbleSort(array);

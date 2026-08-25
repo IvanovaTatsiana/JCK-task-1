@@ -4,6 +4,8 @@ import com.innowise.jck.arraytask.exception.ArrayTaskException;
 import com.innowise.jck.arraytask.parser.impl.ArrayParserImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,6 +15,13 @@ class ArrayParserTest {
   @BeforeEach
   void setUp() {
     parser = new ArrayParserImpl();
+  }
+
+  @ParameterizedTest
+  @CsvSource({"'1 2 3', 3", "'10,20,30,40', 4", "'-5; 0; 5', 3"})
+  void testParseToArrayCorrectSize(String input, int expectedSize) throws ArrayTaskException {
+    int[] result = parser.parseToArray(input);
+    assertEquals(expectedSize, result.length);
   }
 
   @Test

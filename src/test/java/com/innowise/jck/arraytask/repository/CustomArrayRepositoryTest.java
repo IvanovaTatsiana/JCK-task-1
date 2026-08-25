@@ -21,15 +21,13 @@ class CustomArrayRepositoryTest {
   @BeforeEach
   void setUp() throws ArrayTaskException {
     repository = CustomArrayRepository.getInstance();
-
     repository.getAll().forEach(repository::remove);
     Warehouse.getInstance().clear();
     observer = new ArrayObserverImpl();
 
-    CustomArray a1 = new CustomArray("A", new int[] {1, 2, 3}); // size=3, first=1, sum=6, avg=2
-    CustomArray a2 = new CustomArray("C", new int[] {10, 20}); // size=2, first=10, sum=30, avg=15
-    CustomArray a3 =
-        new CustomArray("B", new int[] {-5, 0, 5, 10}); // size=4, first=-5, sum=10, avg=2.5
+    CustomArray a1 = new CustomArray("A", new int[] {1, 2, 3});
+    CustomArray a2 = new CustomArray("C", new int[] {10, 20});
+    CustomArray a3 = new CustomArray("B", new int[] {-5, 0, 5, 10});
 
     observer.add(a1);
     observer.add(a2);
@@ -57,19 +55,19 @@ class CustomArrayRepositoryTest {
   @Test
   void testQueryByMin() {
     List<CustomArray> result = repository.query(new SpecificationByMin(0));
-    assertEquals(2, result.size()); // A (min=1) и C (min=10)
+    assertEquals(2, result.size());
   }
 
   @Test
   void testQueryByMax() {
     List<CustomArray> result = repository.query(new SpecificationByMax(5));
-    assertEquals(1, result.size()); // A (max=3)
+    assertEquals(1, result.size());
   }
 
   @Test
   void testQueryBySum() {
     List<CustomArray> result = repository.query(new SpecificationBySum(15));
-    assertEquals(1, result.size()); // C (sum=30)
+    assertEquals(1, result.size());
   }
 
   @Test
@@ -83,16 +81,16 @@ class CustomArrayRepositoryTest {
   @Test
   void testSortBySize() {
     List<CustomArray> sorted = repository.sort(CustomArrayComparator.SIZE);
-    assertEquals(2, sorted.get(0).getArraySize()); // C (size=2)
-    assertEquals(3, sorted.get(1).getArraySize()); // A (size=3)
-    assertEquals(4, sorted.get(2).getArraySize()); // B (size=4)
+    assertEquals(2, sorted.get(0).getArraySize());
+    assertEquals(3, sorted.get(1).getArraySize());
+    assertEquals(4, sorted.get(2).getArraySize());
   }
 
   @Test
   void testSortByFirstElement() {
     List<CustomArray> sorted = repository.sort(CustomArrayComparator.FIRST_ELEMENT);
-    assertEquals(-5, sorted.get(0).getFirstElement()); // B
-    assertEquals(1, sorted.get(1).getFirstElement()); // A
-    assertEquals(10, sorted.get(2).getFirstElement()); // C
+    assertEquals(-5, sorted.get(0).getFirstElement());
+    assertEquals(1, sorted.get(1).getFirstElement());
+    assertEquals(10, sorted.get(2).getFirstElement());
   }
 }
