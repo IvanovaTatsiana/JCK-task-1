@@ -15,7 +15,7 @@ public class ArrayParserImpl implements ArrayParser {
       logger.error("Parsing context validation failure: row row is null");
       throw new ArrayTaskException("Target context to parse cannot be null");
     }
-    String trimmed = line.trim();
+    String trimmed = line.strip();
     logger.info("Executing token parsing layout logic on string row elements");
 
     String[] tokens = trimmed.split(DELIMITER_REGEX);

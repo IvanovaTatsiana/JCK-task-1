@@ -14,7 +14,7 @@ public class StringArrayValidatorImpl implements StringArrayValidator {
       logger.debug("Validation structural criteria check dropped: string reference is empty");
       return false;
     }
-    boolean matches = line.trim().matches(ARRAY_REGEX);
+    boolean matches = line.strip().matches(ARRAY_REGEX);
     logger.debug("Regular expression matching output for raw row data block: {}", matches);
     return matches;
   }
