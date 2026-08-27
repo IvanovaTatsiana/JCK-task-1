@@ -15,17 +15,17 @@ public class ArrayParserImpl implements ArrayParser {
       logger.error("Parsing context validation failure: row row is null");
       throw new ArrayTaskException("Target context to parse cannot be null");
     }
-    String trimmed = line.strip();
+    String stripped = line.strip();
     logger.info("Executing token parsing layout logic on string row elements");
 
-    String[] tokens = trimmed.split(DELIMITER_REGEX);
+    String[] tokens = stripped.split(DELIMITER_REGEX);
     int[] numbers = new int[tokens.length];
     try {
       for (int i = 0; i < tokens.length; i++) {
         numbers[i] = Integer.parseInt(tokens[i]);
       }
     } catch (NumberFormatException e) {
-      logger.error("Conversion mismatch mapping integer for target segment text: " + trimmed, e);
+      logger.error("Conversion mismatch mapping integer for target segment text: " + stripped, e);
       throw new ArrayTaskException("Row string token block parsing conversion error", e);
     }
     return numbers;
